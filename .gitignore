@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+server.js
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor & OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+
+# Testing & coverage
+coverage/
+
+# TypeScript
+*.tsbuildinfo
+
+# Vite
+.vite/
+
+# Cursor / local tooling
+.cursor/projects/
+agent-tools/
+terminals/
+
+# Optional local media (keep public/ assets committed)
+# Uncomment if you add large source files outside public/
+# *.mp4
+# *.mov

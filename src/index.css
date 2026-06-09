@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+
+  /* Hero + Lithic-adapted brand tokens */
+  --color-primary: #A55A42;
+  --color-secondary: #D8C5A4;
+  --color-accent: #7A8B6F;
+  --color-architect-violet: #5c2999;
+  --color-text: #2B2B2B;
+  --color-ash-gray: #888888;
+  --color-smoke: #e5e5e5;
+  --color-background: #F8F5F0;
+  --color-warm-cream: #f6f3ee;
+  --color-lavender-mist: #f6f1fe;
+  --color-mint-whisper: #ebfef6;
+  --color-obsidian: #1A1A1A;
+
+  --spacing-section: 120px;
+  --radius-card: 24px;
+  --page-max-width: 1200px;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #F8F5F0;
+  color: #2B2B2B;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  letter-spacing: -0.02em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Lithic-inspired type scale — Inter 400/500, tight tracking throughout */
+.text-caption {
+  font-size: 14px;
+  line-height: 1.52;
+  letter-spacing: -0.02em;
+}
+
+.text-body-sm {
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+}
+
+.text-subheading {
+  font-size: 20px;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+}
+
+.text-heading-sm {
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.text-heading {
+  font-size: 36px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.tracking-tight {
+  letter-spacing: -0.02em;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F8F5F0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(43, 43, 43, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(43, 43, 43, 0.25);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.hero-headline-contrast {
+  color: #ffffff;
+  paint-order: stroke fill;
+  -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.35);
+  text-shadow:
+    0 0 40px rgba(0, 0, 0, 0.9),
+    0 2px 4px rgba(0, 0, 0, 0.95),
+    0 4px 16px rgba(0, 0, 0, 0.8),
+    0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+.hero-text-contrast {
+  color: #ffffff;
+  paint-order: stroke fill;
+  -webkit-text-stroke: 0.75px rgba(0, 0, 0, 0.4);
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.95),
+    0 2px 12px rgba(0, 0, 0, 0.75),
+    0 4px 24px rgba(0, 0, 0, 0.5);
+}
+
+.glass-effect {
+  background: rgba(15, 15, 15, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Stitch-modern section utilities */
+.section-surface-white { background-color: #ffffff; }
+.section-surface-cream { background-color: #f6f3ee; }
+.section-surface-lavender { background-color: #f6f1fe; }
+.section-surface-mint { background-color: #ebfef6; }
