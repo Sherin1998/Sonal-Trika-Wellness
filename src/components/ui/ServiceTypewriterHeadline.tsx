@@ -57,7 +57,7 @@ export default function ServiceTypewriterHeadline({
   return (
     <h3
       ref={ref}
-      className={`font-display text-[32px] md:text-[48px] leading-[1.05] tracking-tight text-[#2B2B2B] ${className}`}
+      className={`font-display text-[clamp(1.5rem,5vw,3rem)] leading-[1.05] tracking-tight text-[#2B2B2B] text-balance min-w-0 ${className}`}
     >
       <span>{renderText()}</span>
       {!done && inView && (

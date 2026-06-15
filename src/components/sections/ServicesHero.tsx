@@ -95,7 +95,7 @@ export default function ServicesHero() {
             delay: 0.35,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="font-sans text-body-sm md:text-subheading text-[#F8F5F0]/90 max-w-xl leading-[1.65] md:leading-relaxed hero-text-contrast"
+          className="font-sans text-body-sm md:text-subheading text-[#F8F5F0]/90 max-w-xl leading-[1.65] md:leading-relaxed hero-text-contrast break-words"
         >
           Curated pathways to restoration — private protocols, collective experiences, and
           teaching designed for depth, not distraction.
@@ -109,7 +109,7 @@ export default function ServicesHero() {
             delay: 0.55,
             ease: [0.16, 1, 0.3, 1],
           }}
-          className="mt-8 md:mt-10 flex flex-wrap items-center gap-x-6 gap-y-3"
+          className="mt-8 md:mt-10 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-x-6 sm:gap-y-3"
         >
           <a
             href="#services-offerings"

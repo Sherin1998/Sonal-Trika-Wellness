@@ -40,13 +40,13 @@ export const FlowSection: React.FC<FlowSectionProps> = ({
     <section
       data-flow-section
       aria-label={ariaLabel}
-      className={cx('relative isolate min-h-screen w-full overflow-hidden', className)}
+      className={cx('relative isolate min-h-0 w-full overflow-hidden md:min-h-screen', className)}
       style={sectionSurface}
     >
       <div
         data-flow-inner
         className={cx(
-          'flow-art-container relative flex min-h-screen w-full flex-col justify-between gap-6 px-[4vw] pt-[clamp(2rem,8vw,4vw)] pb-[4vw]',
+          'flow-art-container relative flex min-h-0 w-full flex-col justify-between gap-6 px-[4vw] pt-[clamp(2rem,8vw,4vw)] pb-[4vw] md:min-h-screen',
           'will-change-transform',
         )}
         style={{ transformOrigin: 'bottom left', backfaceVisibility: 'hidden', ...sectionSurface, ...innerStyle }}

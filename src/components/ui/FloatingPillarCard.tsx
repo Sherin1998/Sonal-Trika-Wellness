@@ -26,7 +26,7 @@ export default function FloatingPillarCard({
 
   return (
     <li
-      className={`trika-pillar-card rounded-[10px] border p-4 shadow-md backdrop-blur-sm transition-all duration-400 md:p-5 ${className}`}
+      className={`trika-pillar-card min-w-0 w-full rounded-[10px] border p-4 shadow-md backdrop-blur-sm transition-all duration-400 md:p-5 ${className}`}
       style={{
         marginLeft: floatOffset,
         backgroundColor: hovered ? 'rgba(140, 130, 182, 0.12)' : 'rgba(255, 255, 255, 0.85)',
@@ -40,12 +40,15 @@ export default function FloatingPillarCard({
       onMouseLeave={() => setHovered(false)}
     >
       <h4
-        className="font-display mb-1.5 text-[1rem] font-medium leading-snug md:text-[1.1rem]"
+        className="font-display mb-1.5 text-[0.9375rem] font-medium leading-snug break-words text-balance sm:text-[1rem] md:text-[1.1rem]"
         style={{ color: hovered ? TERRACOTTA : ACCENT }}
       >
         {title}
       </h4>
-      <p className="font-sans text-[13px] leading-[1.55] tracking-[0.03em]" style={{ color: MUTED }}>
+      <p
+        className="font-sans text-xs leading-[1.55] tracking-[0.03em] break-words sm:text-[13px]"
+        style={{ color: MUTED }}
+      >
         {body}
       </p>
     </li>

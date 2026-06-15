@@ -81,7 +81,8 @@ export default function AboutTrikaWellnessSection() {
   const clusterRef = useRef<HTMLDivElement>(null);
   const leftCardsRef = useRef<HTMLUListElement>(null);
   const rightCardsRef = useRef<HTMLUListElement>(null);
-  const mobileCardsRef = useRef<HTMLUListElement>(null);
+  const mobileLeftCardsRef = useRef<HTMLUListElement>(null);
+  const mobileRightCardsRef = useRef<HTMLUListElement>(null);
 
   useLayoutEffect(() => {
     const panel = panel3Ref.current;
@@ -91,11 +92,13 @@ export default function AboutTrikaWellnessSection() {
     if (reduced) return;
 
     const edgeOffset = () => Math.min(window.innerWidth * 0.45, 520);
+    const mobileOffset = () => Math.min(window.innerWidth * 0.35, 280);
 
     const ctx = gsap.context(() => {
       const animateCards = (container: HTMLElement | null, fromX: number | (() => number)) => {
         if (!container) return;
         const cards = container.querySelectorAll('.trika-pillar-card');
+        if (cards.length === 0) return;
         gsap.fromTo(
           cards,
           { x: fromX, opacity: 0 },
@@ -116,7 +119,8 @@ export default function AboutTrikaWellnessSection() {
 
       animateCards(leftCardsRef.current, () => -edgeOffset());
       animateCards(rightCardsRef.current, () => edgeOffset());
-      animateCards(mobileCardsRef.current, 0);
+      animateCards(mobileLeftCardsRef.current, () => -mobileOffset());
+      animateCards(mobileRightCardsRef.current, () => mobileOffset());
     }, panel);
 
     const refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 300);
@@ -231,7 +235,7 @@ export default function AboutTrikaWellnessSection() {
 
               <div
                 ref={clusterRef}
-                className="relative overflow-hidden rounded-2xl border px-4 py-8 md:px-8 md:py-10"
+                className="relative overflow-hidden rounded-2xl border px-3 py-6 md:px-8 md:py-10"
                 style={{
                   backgroundColor: 'rgba(255, 255, 255, 0.72)',
                   borderColor: 'rgba(216, 197, 164, 0.45)',
@@ -246,8 +250,8 @@ export default function AboutTrikaWellnessSection() {
                   }}
                   aria-hidden
                 />
-              <div className="relative grid grid-cols-1 items-center gap-6 lg:grid-cols-[1fr_auto_1fr] lg:gap-5 xl:gap-8">
-                <ul ref={leftCardsRef} className="hidden flex-col gap-3 lg:flex">
+              <div className="relative grid grid-cols-1 items-center gap-6 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-5 xl:gap-8">
+                <ul ref={leftCardsRef} className="hidden min-w-0 flex-col gap-3 lg:flex">
                   {LEFT_PILLARS.map((pillar, i) => (
                     <FloatingPillarCard
                       key={pillar.title}
@@ -271,7 +275,7 @@ export default function AboutTrikaWellnessSection() {
                   />
                 </div>
 
-                <ul ref={rightCardsRef} className="hidden flex-col gap-3 lg:flex">
+                <ul ref={rightCardsRef} className="hidden min-w-0 flex-col gap-3 lg:flex">
                   {RIGHT_PILLARS.map((pillar, i) => (
                     <FloatingPillarCard
                       key={pillar.title}
@@ -281,11 +285,18 @@ export default function AboutTrikaWellnessSection() {
                   ))}
                 </ul>
 
-                <ul ref={mobileCardsRef} className="col-span-1 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:hidden">
-                  {[...LEFT_PILLARS, ...RIGHT_PILLARS].map((pillar) => (
-                    <FloatingPillarCard key={pillar.title} {...pillar} />
-                  ))}
-                </ul>
+                <div className="col-span-1 grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 lg:hidden">
+                  <ul ref={mobileLeftCardsRef} className="flex min-w-0 flex-col gap-3">
+                    {LEFT_PILLARS.map((pillar) => (
+                      <FloatingPillarCard key={pillar.title} {...pillar} floatOffset="0px" />
+                    ))}
+                  </ul>
+                  <ul ref={mobileRightCardsRef} className="flex min-w-0 flex-col gap-3">
+                    {RIGHT_PILLARS.map((pillar) => (
+                      <FloatingPillarCard key={pillar.title} {...pillar} floatOffset="0px" />
+                    ))}
+                  </ul>
+                </div>
               </div>
               </div>
             </div>
