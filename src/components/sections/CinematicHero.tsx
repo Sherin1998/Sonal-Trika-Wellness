@@ -26,6 +26,7 @@ interface CinematicHeroProps {
   videoSrc: string;
   onPrimaryCtaClick?: () => void;
   onSecondaryCtaClick?: () => void;
+  hideScrollHint?: boolean;
 }
 
 const ease = [0.25, 0.1, 0.25, 1] as const;
@@ -34,6 +35,7 @@ export default function CinematicHero({
   videoSrc,
   onPrimaryCtaClick,
   onSecondaryCtaClick,
+  hideScrollHint = false,
 }: CinematicHeroProps) {
   const reducedMotion = useReducedMotion();
   const contentRef = useRef<HTMLDivElement>(null);
@@ -147,7 +149,7 @@ export default function CinematicHero({
         </div>
       </motion.div>
 
-      {!reducedMotion && (
+      {!reducedMotion && !hideScrollHint && (
         <motion.div
           ref={scrollHintRef}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 pointer-events-none will-change-transform"

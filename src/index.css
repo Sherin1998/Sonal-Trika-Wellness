@@ -164,18 +164,20 @@ html, body {
   }
 }
 
-/* Testimonials — horizontal marquee: solid left, fade right for 2.5-card peek */
+/* Testimonials — horizontal marquee: symmetric fade for RTL scroll + manual drag */
 .testimonial-horizontal-mask {
   -webkit-mask-image: linear-gradient(
     to right,
-    black 0%,
-    black 82%,
+    transparent 0%,
+    black 12%,
+    black 88%,
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
-    black 0%,
-    black 82%,
+    transparent 0%,
+    black 12%,
+    black 88%,
     transparent 100%
   );
 }
@@ -351,6 +353,21 @@ html, body {
     height: 420px;
   }
 
+  .liquid-gallery-compact .liquid-gallery-mask {
+    bottom: 9rem;
+    max-height: 46%;
+    padding-bottom: 0.25rem;
+  }
+
+  .liquid-gallery-compact .liquid-gallery-mobile-desc {
+    margin-bottom: 0.35rem;
+  }
+
+  .liquid-gallery-compact .liquid-gallery-cta-bar {
+    z-index: 30;
+    min-height: 5.5rem;
+  }
+
   .liquid-gallery-item {
     flex: 0 0 85vw;
     max-width: 360px;
@@ -406,6 +423,7 @@ html, body {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 0.625rem 0.875rem;
+    z-index: 30;
   }
 
   .liquid-gallery-image {

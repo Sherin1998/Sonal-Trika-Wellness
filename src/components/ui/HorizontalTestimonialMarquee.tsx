@@ -3,12 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useEffect, useState } from 'react';
-import {
-  motion,
-  useAnimationControls,
-  useReducedMotion,
-} from 'motion/react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useReducedMotion } from 'motion/react';
 import type { Testimonial } from '../../data/testimonials';
 
 export const TESTIMONIAL_CARD_WIDTH = 360;
@@ -16,6 +12,8 @@ export const TESTIMONIAL_CARD_GAP = 24;
 /** Visible width: 2 full cards + half of third */
 export const TESTIMONIAL_VIEWPORT_WIDTH =
   TESTIMONIAL_CARD_WIDTH * 2.5 + TESTIMONIAL_CARD_GAP * 2;
+
+const RESUME_AUTO_MS = 2000;
 
 interface HorizontalTestimonialMarqueeProps {
   testimonials: Testimonial[];
@@ -53,31 +51,93 @@ export default function HorizontalTestimonialMarquee({
   testimonials,
   duration = 80,
 }: HorizontalTestimonialMarqueeProps) {
-  const controls = useAnimationControls();
   const reducedMotion = useReducedMotion();
-  const [paused, setPaused] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
+  const resumeTimerRef = useRef<number | null>(null);
+  const lastTickRef = useRef<number>(0);
+  const [manual, setManual] = useState(false);
+  const [hoverPaused, setHoverPaused] = useState(false);
   const loop = [...testimonials, ...testimonials];
 
+  const clearResumeTimer = useCallback(() => {
+    if (resumeTimerRef.current !== null) {
+      window.clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = null;
+    }
+  }, []);
+
+  const scheduleResume = useCallback(() => {
+    clearResumeTimer();
+    resumeTimerRef.current = window.setTimeout(() => {
+      setManual(false);
+    }, RESUME_AUTO_MS);
+  }, [clearResumeTimer]);
+
+  const pauseForManual = useCallback(() => {
+    setManual(true);
+    clearResumeTimer();
+  }, [clearResumeTimer]);
+
   useEffect(() => {
-    if (reducedMotion) return;
-    if (paused) {
-      controls.stop();
+    return () => {
+      clearResumeTimer();
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, [clearResumeTimer]);
+
+  const autoActive = !manual && !hoverPaused;
+
+  useEffect(() => {
+    if (reducedMotion || !autoActive) {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
       return;
     }
-    controls.start({
-      x: ['-50%', '0%'],
-      transition: {
-        duration,
-        ease: 'linear',
-        repeat: Number.POSITIVE_INFINITY,
-      },
-    });
-  }, [controls, paused, reducedMotion, duration]);
+
+    const el = scrollRef.current;
+    if (!el) return;
+
+    lastTickRef.current = performance.now();
+
+    const tick = (now: number) => {
+      const delta = now - lastTickRef.current;
+      lastTickRef.current = now;
+
+      const halfWidth = el.scrollWidth / 2;
+      if (halfWidth <= 0) {
+        rafRef.current = requestAnimationFrame(tick);
+        return;
+      }
+
+      const pxPerMs = halfWidth / (duration * 1000);
+      el.scrollLeft += pxPerMs * delta;
+
+      if (el.scrollLeft >= halfWidth) {
+        el.scrollLeft -= halfWidth;
+      }
+
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
+  }, [autoActive, reducedMotion, duration, testimonials.length]);
 
   if (reducedMotion) {
     return (
       <div
-        className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide"
+        className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide touch-pan-x"
         style={{ maxWidth: TESTIMONIAL_VIEWPORT_WIDTH }}
       >
         {testimonials.map((item) => (
@@ -89,27 +149,36 @@ export default function HorizontalTestimonialMarquee({
 
   return (
     <div
-      className="testimonial-horizontal-mask relative overflow-hidden"
+      className="testimonial-horizontal-mask relative"
       style={{
         width: '100%',
         maxWidth: TESTIMONIAL_VIEWPORT_WIDTH,
         minHeight: 280,
       }}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
+      onMouseEnter={() => setHoverPaused(true)}
+      onMouseLeave={() => {
+        setHoverPaused(false);
+        if (manual) scheduleResume();
+      }}
     >
-      <motion.div
-        className="flex w-max items-stretch py-2"
-        style={{ gap: TESTIMONIAL_CARD_GAP }}
-        animate={controls}
-        initial={{ x: '-50%' }}
+      <div
+        ref={scrollRef}
+        className="overflow-x-auto scrollbar-hide touch-pan-x py-2"
+        style={{ scrollSnapType: manual ? 'x proximity' : 'none' }}
+        onPointerDown={pauseForManual}
+        onTouchStart={pauseForManual}
+        onPointerUp={scheduleResume}
+        onTouchEnd={scheduleResume}
       >
-        {loop.map((item, i) => (
-          <TestimonialCard key={`${item.id}-${i}`} item={item} />
-        ))}
-      </motion.div>
+        <div
+          className="flex w-max items-stretch"
+          style={{ gap: TESTIMONIAL_CARD_GAP }}
+        >
+          {loop.map((item, i) => (
+            <TestimonialCard key={`${item.id}-${i}`} item={item} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

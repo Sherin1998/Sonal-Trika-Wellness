@@ -22,8 +22,8 @@ interface NavigationBarProps {
   homeUrl?: string;
 }
 
-function isInternalRoute(url: string) {
-  return url.startsWith('/') && !url.startsWith('/#');
+function isInternalPath(url: string) {
+  return url.startsWith('/') && !url.startsWith('//');
 }
 
 function NavChildLink({
@@ -35,7 +35,7 @@ function NavChildLink({
   className: string;
   onClick?: () => void;
 }) {
-  if (isInternalRoute(child.url)) {
+  if (isInternalPath(child.url)) {
     return (
       <Link to={child.url} className={className} onClick={onClick}>
         {child.label}
@@ -87,7 +87,7 @@ function NavAnchor({
 
   const cls = `${className} group`;
 
-  if (isInternalRoute(link.url)) {
+  if (isInternalPath(link.url)) {
     return (
       <Link to={link.url} className={cls} onClick={onClick}>
         {inner}
@@ -124,7 +124,6 @@ function DesktopNavItem({
       <div className="pointer-events-none absolute left-1/2 top-full z-50 w-[240px] -translate-x-1/2 pt-3 opacity-0 transition-all duration-300 group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100">
         <div className="max-h-[min(420px,70vh)] overflow-y-auto rounded-2xl border border-[#e5e5e5]/80 bg-white/95 p-2 shadow-[0_12px_40px_rgba(0,0,0,0.1)] backdrop-blur-xl">
           {link.children.map((child, i) => {
-            const isViewAll = child.label === 'View All Services';
             const isCategory = SERVICE_GROUP_LABELS.has(child.label);
 
             return (
@@ -135,7 +134,7 @@ function DesktopNavItem({
                 <NavChildLink
                   child={child}
                   className={`${childClass} ${
-                    isViewAll || isCategory
+                    isCategory
                       ? 'font-semibold text-[#2B2B2B]'
                       : 'pl-5 text-[12px]'
                   }`}
@@ -287,20 +286,31 @@ export default function NavigationBar({
                 >
                   {link.children?.length ? (
                     <div>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setExpandedMobile((prev) => (prev === link.label ? null : link.label))
-                        }
-                        className="flex w-full items-center justify-between font-display text-lg font-medium text-[#F8F5F0]/80 hover:text-[#F2B5A0] py-2 border-b border-[#F8F5F0]/10 transition-all"
-                      >
-                        {link.label}
-                        <ChevronDown
-                          className={`h-4 w-4 transition-transform duration-300 ${
-                            expandedMobile === link.label ? 'rotate-180' : ''
-                          }`}
-                        />
-                      </button>
+                      <div className="flex items-center border-b border-[#F8F5F0]/10">
+                        <Link
+                          to="/services"
+                          onClick={() => setIsOpen(false)}
+                          className="flex-1 font-display text-lg font-medium text-[#F8F5F0]/80 hover:text-[#F2B5A0] py-2 transition-all"
+                        >
+                          {link.label}
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setExpandedMobile((prev) =>
+                              prev === link.label ? null : link.label,
+                            )
+                          }
+                          className="shrink-0 p-2 text-[#F8F5F0]/60 hover:text-[#F2B5A0] transition-colors"
+                          aria-label={`Expand ${link.label} menu`}
+                        >
+                          <ChevronDown
+                            className={`h-4 w-4 transition-transform duration-300 ${
+                              expandedMobile === link.label ? 'rotate-180' : ''
+                            }`}
+                          />
+                        </button>
+                      </div>
                       {expandedMobile === link.label && (
                         <div className="mt-2 flex flex-col gap-1 border-l border-[#F8F5F0]/15 pl-3">
                           {link.children.map((child) => (

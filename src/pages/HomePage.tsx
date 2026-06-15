@@ -3,11 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import NavigationBar from '../components/NavigationBar';
 import CinematicHero from '../components/sections/CinematicHero';
+import SiteIntroSplash from '../components/sections/SiteIntroSplash';
 import ScrollRevealSection from '../components/sections/ScrollRevealSection';
 import NervousSystemJourney from '../components/sections/NervousSystemJourney';
 import ExperiencesSection from '../components/sections/ExperiencesSection';
@@ -28,7 +29,19 @@ interface ToastNotification {
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const [introDone, setIntroDone] = useState(false);
   const [toasts, setToasts] = useState<ToastNotification[]>([]);
+
+  useEffect(() => {
+    if (!introDone) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [introDone]);
 
   const triggerToast = (title: string, message: string) => {
     const id = Math.random().toString(36).substring(2, 9);
@@ -40,6 +53,7 @@ export default function HomePage() {
 
   return (
     <div className="relative bg-[#F8F5F0] min-h-screen w-full text-[#2B2B2B]">
+      {!introDone && <SiteIntroSplash onComplete={() => setIntroDone(true)} />}
       <NavigationBar
         links={NAV_LINKS}
         ctaText="Book a Session"
@@ -52,6 +66,7 @@ export default function HomePage() {
 
       <CinematicHero
         videoSrc={HERO_VIDEO}
+        hideScrollHint={!introDone}
         onPrimaryCtaClick={() =>
           openConnectPanel({ service: 'General Inquiry', action: 'Begin Your Healing Journey' })
         }

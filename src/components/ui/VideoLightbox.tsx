@@ -4,6 +4,7 @@
  */
 
 import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { X } from 'lucide-react';
 
@@ -46,14 +47,16 @@ export default function VideoLightbox({
     }
   }, [open]);
 
-  return (
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <AnimatePresence>
       {open && (
         <motion.div
           role="dialog"
           aria-modal="true"
           aria-label={title}
-          className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8"
+          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -62,12 +65,12 @@ export default function VideoLightbox({
           <button
             type="button"
             aria-label="Close video"
-            className="absolute inset-0 bg-[#1A1A1A]/88 backdrop-blur-sm cursor-pointer"
+            className="absolute inset-0 bg-[#1A1A1A]/92 backdrop-blur-md cursor-pointer"
             onClick={onClose}
           />
 
           <motion.div
-            className="relative z-10 w-full max-w-4xl"
+            className="relative z-10 flex max-h-[92vh] w-full max-w-4xl flex-col items-center"
             initial={{ opacity: 0, y: 24, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.98 }}
@@ -77,7 +80,7 @@ export default function VideoLightbox({
               type="button"
               aria-label="Close video"
               onClick={onClose}
-              className="absolute -top-12 right-0 md:-right-2 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-colors"
+              className="absolute -top-12 right-0 md:-right-2 z-20 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -88,12 +91,14 @@ export default function VideoLightbox({
                 src={src}
                 controls
                 playsInline
-                className="w-full aspect-video object-contain bg-black"
+                preload="metadata"
+                className="block max-h-[80vh] w-auto max-w-full mx-auto object-contain bg-black"
               />
             </div>
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

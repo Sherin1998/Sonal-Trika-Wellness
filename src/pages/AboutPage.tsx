@@ -3,14 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/layout/Footer';
 import ConnectPanel from '../components/ConnectPanel';
 import { NAV_LINKS } from '../data/navigation';
 import { openConnectPanel } from '../utils/serviceCta';
-import AboutIntroSplash from '../components/sections/AboutIntroSplash';
 import AboutStackCards, { AboutStackCardData } from '../components/sections/AboutStackCards';
 import OutcomesSection from '../components/sections/OutcomesSection';
 import FounderEditorialSection from '../components/sections/FounderEditorialSection';
@@ -61,8 +60,11 @@ const STACK_CARDS: AboutStackCardData[] = [
 ];
 
 export default function AboutPage() {
-  const [splashDone, setSplashDone] = useState(false);
   const [toasts, setToasts] = useState<{ id: string; title: string; message: string }[]>([]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const triggerToast = (title: string, message: string) => {
     const id = Math.random().toString(36).substring(2, 9);
@@ -74,7 +76,6 @@ export default function AboutPage() {
 
   return (
     <div className="relative min-h-screen w-full bg-[#FDF8F0] text-[#2B2B2B]">
-      {!splashDone && <AboutIntroSplash onComplete={() => setSplashDone(true)} />}
       <NavigationBar
         links={NAV_LINKS}
         ctaText="Book a Session"
@@ -107,16 +108,14 @@ export default function AboutPage() {
               About Sound Healing
             </p>
             <h1 className="w-full overflow-x-auto scrollbar-hide min-h-[1.2em]">
-              {splashDone && (
-                <TypewriterText
-                  partOne="Heal Through"
-                  partTwo="Sacred Sound"
-                  speed={46}
-                  delay={350}
-                  className="font-sans font-semibold uppercase text-[clamp(1.25rem,2.8vw,2.75rem)] leading-none tracking-tight text-[#2B2B2B]"
-                  gapClassName="mx-[0.4em] md:mx-[0.55em]"
-                />
-              )}
+              <TypewriterText
+                partOne="Heal Through"
+                partTwo="Sacred Sound"
+                speed={46}
+                delay={350}
+                className="font-sans font-semibold uppercase text-[clamp(1.25rem,2.8vw,2.75rem)] leading-none tracking-tight text-[#2B2B2B]"
+                gapClassName="mx-[0.4em] md:mx-[0.55em]"
+              />
             </h1>
           </motion.div>
 

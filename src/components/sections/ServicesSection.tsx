@@ -134,7 +134,7 @@ export default function ServicesSection({
             ref={(el) => {
               groupRefs.current[groupIdx] = el;
             }}
-            className={groupIdx > 0 ? 'relative z-10 mt-16 md:mt-[120px]' : 'relative z-10'}
+            className={groupIdx > 0 ? 'relative z-10 mt-16 md:mt-[120px] scroll-mt-24' : 'relative z-10 scroll-mt-24'}
           >
             <Container className="mb-8 md:mb-12">
               <div className="services-group-header flex min-w-0 flex-col md:flex-row md:items-end md:justify-between gap-4">

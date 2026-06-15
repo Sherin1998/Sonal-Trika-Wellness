@@ -83,7 +83,8 @@ function LiquidGalleryItem({
 
   return (
     <article
-      className="liquid-gallery-item group"
+      id={item.id}
+      className="liquid-gallery-item group scroll-mt-24"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onFocus={handleMouseEnter}

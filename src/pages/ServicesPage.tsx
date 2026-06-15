@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/layout/Footer';
@@ -25,12 +26,15 @@ interface ToastNotification {
 }
 
 export default function ServicesPage() {
+  const { hash } = useLocation();
   const [toasts, setToasts] = useState<ToastNotification[]>([]);
   const [detailService, setDetailService] = useState<ServiceCard | null>(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    if (!hash) {
+      window.scrollTo(0, 0);
+    }
+  }, [hash]);
 
   const triggerToast = (title: string, message: string) => {
     const id = Math.random().toString(36).substring(2, 9);

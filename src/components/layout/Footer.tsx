@@ -23,19 +23,9 @@ const TICKER_ITEMS = [
 
 const PAGE_LINKS = [
   { label: 'Home', href: '/' },
-  { label: 'About Sonia', href: '/about' },
+  { label: 'About', href: '/about' },
   { label: 'Services', href: '/services' },
-  { label: 'Experiences', href: '/#experiences' },
-  { label: 'Corporate', href: '/services#group' },
-  { label: 'Retreats', href: '/#retreats' },
   { label: 'Contact', href: '/contact' },
-];
-
-const EXPERIENCE_LINKS = [
-  { label: 'Sound Healing', href: '/#experiences' },
-  { label: 'Gong Immersions', href: '/#experiences' },
-  { label: 'Kundalini Yoga', href: '/#experiences' },
-  { label: 'Breathwork', href: '/#experiences' },
 ];
 
 const SOCIAL = [
@@ -113,7 +103,7 @@ function FooterNewsletter() {
   };
 
   return (
-    <div className="md:col-span-2">
+    <div>
       <h4 className="mb-5 font-sans text-caption font-semibold uppercase tracking-[0.2em] text-[#D8C5A4]">
         Newsletter
       </h4>
@@ -161,8 +151,24 @@ function FooterNewsletter() {
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1A1A1A] text-[#F8F5F0]">
-      <div className="border-b border-[#F8F5F0]/10">
+    <footer className="relative overflow-hidden bg-[#1A1A1A] text-[#F8F5F0]">
+      <div
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+        aria-hidden
+      >
+        <img
+          src="/images/trika-logo.png"
+          alt=""
+          className="absolute -right-8 top-1/4 h-48 w-48 opacity-[0.04] md:h-64 md:w-64"
+        />
+        <span
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-display text-[clamp(6rem,18vw,14rem)] leading-none tracking-tight text-[#F8F5F0] opacity-[0.03] select-none"
+        >
+          Trika
+        </span>
+      </div>
+
+      <div className="relative z-10 border-b border-[#F8F5F0]/10">
         <FooterTicker />
 
         <Container className="py-14 md:py-16">
@@ -192,7 +198,7 @@ export default function Footer() {
         </Container>
       </div>
 
-      <Container className="py-14 md:py-16">
+      <Container className="relative z-10 py-14 md:py-16">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-8">
           <div className="md:col-span-3">
             <TrikaLogo homeUrl="/" variant="light" className="mb-4" />
@@ -216,19 +222,8 @@ export default function Footer() {
           </div>
 
           <div className="md:col-span-2">
-            <h4 className="mb-5 font-sans text-caption font-semibold uppercase tracking-[0.2em] text-[#D8C5A4]">
-              Experiences
-            </h4>
-            <ul className="flex flex-col gap-3">
-              {EXPERIENCE_LINKS.map((l) => (
-                <li key={l.label}>
-                  <FooterLink href={l.href} label={l.label} />
-                </li>
-              ))}
-            </ul>
+            <FooterNewsletter />
           </div>
-
-          <FooterNewsletter />
 
           <div className="md:col-span-3">
             <h4 className="mb-5 font-sans text-caption font-semibold uppercase tracking-[0.2em] text-[#D8C5A4]">
@@ -303,7 +298,7 @@ export default function Footer() {
         </div>
       </Container>
 
-      <div className="border-t border-[#F8F5F0]/10">
+      <div className="relative z-10 border-t border-[#F8F5F0]/10">
         <Container className="flex flex-col items-center justify-between gap-4 py-6 md:flex-row">
           <p className="font-sans text-caption tracking-tight text-[#F8F5F0]/45">
             &copy; {new Date().getFullYear()} {TRIKA_CONTACT.company}. All rights reserved.

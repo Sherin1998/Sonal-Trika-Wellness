@@ -4,6 +4,7 @@
  */
 
 import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { X } from 'lucide-react';
 import type { VideoTestimonial } from '../../data/testimonials';
@@ -38,7 +39,9 @@ export default function VideoTestimonialModal({
     }
   }, [video]);
 
-  return (
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <AnimatePresence>
       {video && (
         <>
@@ -48,7 +51,7 @@ export default function VideoTestimonialModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             aria-label="Close video"
-            className="fixed inset-0 z-[80] bg-[#1A1A1A]/85 backdrop-blur-md cursor-pointer border-0 p-0"
+            className="fixed inset-0 z-[9998] bg-[#1A1A1A]/85 backdrop-blur-md cursor-pointer border-0 p-0"
             onClick={onClose}
           />
 
@@ -60,7 +63,7 @@ export default function VideoTestimonialModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 16 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-x-4 top-[10vh] md:inset-x-auto md:left-1/2 md:-translate-x-1/2 z-[90] w-auto md:w-[min(900px,calc(100vw-2rem))]"
+            className="fixed inset-x-4 top-[8vh] md:inset-x-auto md:left-1/2 md:-translate-x-1/2 z-[9999] w-auto md:w-[min(420px,calc(100vw-2rem))] max-h-[90vh] overflow-y-auto"
           >
             <div className="relative rounded-2xl overflow-hidden bg-[#1A1A1A] shadow-2xl border border-[#F8F5F0]/10">
               <button
@@ -77,7 +80,8 @@ export default function VideoTestimonialModal({
                 poster={video.posterSrc}
                 controls
                 playsInline
-                className="w-full aspect-video object-cover bg-black"
+                preload="metadata"
+                className="block w-full max-h-[70vh] object-contain bg-black mx-auto"
               />
 
               <div className="p-6 md:p-8 bg-[#F8F5F0]">
@@ -98,6 +102,7 @@ export default function VideoTestimonialModal({
           </motion.div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

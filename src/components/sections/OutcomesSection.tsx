@@ -110,7 +110,7 @@ export default function OutcomesSection() {
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onLeave: (self) => {
-            if (self.direction === 1) {
+            if (self.direction === 1 && window.scrollY > 80) {
               window.dispatchEvent(new CustomEvent('founder-section-reveal'));
               gsap.to(window, {
                 scrollTo: { y: '#founder-story', offsetY: 0 },

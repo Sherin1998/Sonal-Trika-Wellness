@@ -118,12 +118,16 @@ export default function ConnectPanel({ onSubmit }: ConnectPanelProps) {
             />
 
             <motion.div
-              initial={{ opacity: 0, x: 40, scale: 0.95, filter: 'blur(8px)' }}
-              animate={{ opacity: 1, x: 0, scale: 1, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, x: 40, scale: 0.95, filter: 'blur(8px)' }}
-              transition={{ duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
-              className="fixed bottom-8 right-8 z-50 w-[calc(100vw-2rem)] sm:w-[400px] max-h-[85vh] overflow-y-auto"
+              initial={{ opacity: 0, scale: 0.96, filter: 'blur(8px)' }}
+              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, scale: 0.96, filter: 'blur(8px)' }}
+              transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 pointer-events-none"
             >
+              <div
+                className="pointer-events-auto w-full max-w-md max-h-[min(90vh,640px)] overflow-y-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
               <div className="relative bg-[#F8F5F0]/95 backdrop-blur-2xl rounded-3xl border border-[#D8C5A4]/50 shadow-2xl shadow-black/15 overflow-hidden">
                 <div className="h-1 w-full bg-gradient-to-r from-[#A55A42] via-[#7A8B6F] to-[#5B4A8A]" />
 
@@ -292,6 +296,7 @@ export default function ConnectPanel({ onSubmit }: ConnectPanelProps) {
                     )}
                   </AnimatePresence>
                 </div>
+              </div>
               </div>
             </motion.div>
           </>

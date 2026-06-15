@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { SUPABASE_VIDEO_BASE } from '../constants/media';
+
 export interface Testimonial {
   id: string;
   quote: string;
@@ -16,7 +18,7 @@ export interface VideoTestimonial {
   name: string;
   designation: string;
   headline: string;
-  posterSrc: string;
+  posterSrc?: string;
   videoSrc: string;
 }
 
@@ -122,32 +124,23 @@ export const TESTIMONIALS: Testimonial[] = [
 export const VIDEO_TESTIMONIALS: VideoTestimonial[] = [
   {
     id: 'client-story-1',
-    name: 'Client Story 1',
+    name: 'Client Story',
     designation: 'Sound Wellness Client',
     headline: 'In a world of constant noise, clarity becomes everything',
-    posterSrc:
-      'https://res.cloudinary.com/dy8aaemyy/video/upload/so_0,q_auto,f_jpg/v1781334111/In_a_world_full_of_constant_noise_and_fast_paced_living_clarity_becomes_everything._That_s_w_hztjjg',
-    videoSrc:
-      'https://res.cloudinary.com/dy8aaemyy/video/upload/q_auto/f_auto/v1781334111/In_a_world_full_of_constant_noise_and_fast_paced_living_clarity_becomes_everything._That_s_w_hztjjg.mp4',
+    videoSrc: `${SUPABASE_VIDEO_BASE}/Client%201.mp4`,
   },
   {
     id: 'piyush-sound-bath',
     name: 'Piyush',
     designation: 'Sound Bath Client',
     headline: "That's the beauty of a Sound Bath",
-    posterSrc:
-      'https://res.cloudinary.com/dy8aaemyy/video/upload/so_0,q_auto,f_jpg/v1781334098/Thank_you_Piyush_for_sharing_your_experience_so_honestly.That_s_the_beauty_of_a_Sound_Bath_some_bjk3zi',
-    videoSrc:
-      'https://res.cloudinary.com/dy8aaemyy/video/upload/q_auto/f_auto/v1781334098/Thank_you_Piyush_for_sharing_your_experience_so_honestly.That_s_the_beauty_of_a_Sound_Bath_some_bjk3zi.mp4',
+    videoSrc: `${SUPABASE_VIDEO_BASE}/piyush.mp4`,
   },
   {
     id: 'anju-sound-healing',
     name: 'Anju',
     designation: 'Group Sound Healing Client',
     headline: 'What happens when you finally allow yourself to pause',
-    posterSrc:
-      'https://res.cloudinary.com/dy8aaemyy/video/upload/so_0,q_auto,f_jpg/v1781340839/What_happens_when_you_finally_allow_yourself_to_pauseAfter_this_group_sound_healing_session_peo_online-video-cutter.com_ckecrw',
-    videoSrc:
-      'https://res.cloudinary.com/dy8aaemyy/video/upload/q_auto/f_auto/v1781340839/What_happens_when_you_finally_allow_yourself_to_pauseAfter_this_group_sound_healing_session_peo_online-video-cutter.com_ckecrw.mp4',
+    videoSrc: `${SUPABASE_VIDEO_BASE}/What%20happens%20when%20you%20finally%20allow%20yourself%20to%20pauseAfter%20this%20group%20sound%20healing%20session,%20peo%20(online-video-cutter.com).mp4`,
   },
 ];

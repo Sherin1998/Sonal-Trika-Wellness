@@ -45,12 +45,23 @@ export default function VideoTestimonialsGrid({ videos, centered = false }: Vide
             className={cardClass}
           >
             <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-[#1A1A1A] shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
-              <img
-                src={video.posterSrc}
-                alt={video.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-              />
+              {video.posterSrc ? (
+                <img
+                  src={video.posterSrc}
+                  alt={video.name}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
+              ) : (
+                <video
+                  src={video.videoSrc}
+                  muted
+                  playsInline
+                  preload="metadata"
+                  aria-hidden
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/90 via-[#1A1A1A]/20 to-transparent" />
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className="w-16 h-16 rounded-full bg-[#F8F5F0]/95 flex items-center justify-center shadow-lg transition-transform duration-400 group-hover:scale-110">

@@ -10,6 +10,49 @@ import AboutPage from './pages/AboutPage';
 import ServicesPage from './pages/ServicesPage';
 import ContactPage from './pages/ContactPage';
 
+function scrollToHashTarget(id: string, attempt = 0) {
+  const el = document.getElementById(id);
+  if (!el) {
+    if (attempt < 4) {
+      window.setTimeout(() => scrollToHashTarget(id, attempt + 1), 200);
+    }
+    return;
+  }
+
+  const gallery = el.closest('.liquid-gallery-container') as HTMLElement | null;
+
+  if (gallery) {
+    const groupSection = gallery.closest('[id]') as HTMLElement | null;
+    if (groupSection) {
+      groupSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    window.setTimeout(() => {
+      const cardLeft = el.offsetLeft;
+      const cardWidth = el.offsetWidth;
+      gallery.scrollTo({
+        left: cardLeft - (gallery.clientWidth - cardWidth) / 2,
+        behavior: 'smooth',
+      });
+    }, 280);
+    return;
+  }
+
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function ScrollToTopOnNavigate() {
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
+
+  return null;
+}
+
 function ScrollToHash() {
   const { pathname, hash } = useLocation();
   const navigate = useNavigate();
@@ -23,9 +66,10 @@ function ScrollToHash() {
     if (!hash) return;
 
     const id = hash.replace('#', '');
-    const timer = window.setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    }, 120);
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    const delay =
+      pathname === '/services' ? (isMobile ? 500 : 400) : 120;
+    const timer = window.setTimeout(() => scrollToHashTarget(id), delay);
 
     return () => window.clearTimeout(timer);
   }, [pathname, hash, navigate]);
@@ -34,8 +78,15 @@ function ScrollToHash() {
 }
 
 export default function App() {
+  useEffect(() => {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+  }, []);
+
   return (
     <BrowserRouter>
+      <ScrollToTopOnNavigate />
       <ScrollToHash />
       <Routes>
         <Route path="/" element={<HomePage />} />
