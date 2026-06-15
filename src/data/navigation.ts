@@ -20,7 +20,6 @@ const SERVICE_CHILDREN = [
 export const NAV_LINKS: MenuLink[] = [
   { label: 'About', url: '/about' },
   { label: 'Services', url: '/services', children: SERVICE_CHILDREN },
-  { label: 'Experiences', url: '/#experiences' },
   { label: 'Testimonials', url: '/#testimonials' },
   { label: 'Contact', url: '/#contact' },
 ];

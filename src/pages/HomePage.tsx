@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import NavigationBar from '../components/NavigationBar';
@@ -29,14 +29,7 @@ interface ToastNotification {
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const [scrollY, setScrollY] = useState(0);
   const [toasts, setToasts] = useState<ToastNotification[]>([]);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const triggerToast = (title: string, message: string) => {
     const id = Math.random().toString(36).substring(2, 9);
@@ -60,7 +53,6 @@ export default function HomePage() {
 
       <CinematicHero
         videoSrc={HERO_VIDEO}
-        scrollY={scrollY}
         onPrimaryCtaClick={() =>
           openConnectPanel({ service: 'General Inquiry', action: 'Begin Your Healing Journey' })
         }

@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, ArrowUpRight, ChevronDown } from 'lucide-react';
 import { MenuLink, MenuLinkChild } from '../types';
 import TrikaLogo from './ui/TrikaLogo';
+import { onScrollThreshold } from '../utils/performance';
 
 interface NavigationBarProps {
   logoText?: string;
@@ -164,10 +165,7 @@ export default function NavigationBar({
   const [expandedMobile, setExpandedMobile] = useState<string | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    return onScrollThreshold(20, setScrolled);
   }, []);
 
   const isSolid = variant === 'solid' || scrolled;

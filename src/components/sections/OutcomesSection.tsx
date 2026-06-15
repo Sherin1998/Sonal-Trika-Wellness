@@ -9,6 +9,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { motion } from 'motion/react';
 import SectionLabel from '../ui/SectionLabel';
+import { shouldDisableHeavyMotion } from '../../utils/performance';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -34,30 +35,46 @@ function headingShadow(accent: string) {
 
 function OutcomesVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    const wrap = wrapRef.current;
+    if (!video || !wrap) return;
 
     const handleTimeUpdate = () => {
       if (video.currentTime >= CLIP_DURATION) video.currentTime = 0;
     };
 
     video.addEventListener('timeupdate', handleTimeUpdate);
-    void video.play().catch(() => {});
 
-    return () => video.removeEventListener('timeupdate', handleTimeUpdate);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.2 },
+    );
+    observer.observe(wrap);
+
+    return () => {
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+      observer.disconnect();
+    };
   }, []);
 
   return (
-    <div className="relative h-full w-full overflow-hidden min-h-[300px] md:min-h-0">
+    <div ref={wrapRef} className="relative h-full w-full overflow-hidden min-h-[300px] md:min-h-0">
       <video
         ref={videoRef}
         src={OUTCOMES_VIDEO}
         autoPlay
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
         className="absolute inset-0 h-full w-[120%] max-w-none object-cover object-left-center -left-[2%]"
         aria-label="Sound healing outcomes visual"
       />
@@ -84,24 +101,26 @@ export default function OutcomesSection() {
     if (!pin) return;
 
     const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: pin,
-        start: 'top top',
-        end: '+=50%',
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onLeave: (self) => {
-          if (self.direction === 1) {
-            window.dispatchEvent(new CustomEvent('founder-section-reveal'));
-            gsap.to(window, {
-              scrollTo: { y: '#founder-story', offsetY: 0 },
-              duration: 0.75,
-              ease: 'power3.inOut',
-            });
-          }
-        },
-      });
+      if (!shouldDisableHeavyMotion()) {
+        ScrollTrigger.create({
+          trigger: pin,
+          start: 'top top',
+          end: '+=50%',
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onLeave: (self) => {
+            if (self.direction === 1) {
+              window.dispatchEvent(new CustomEvent('founder-section-reveal'));
+              gsap.to(window, {
+                scrollTo: { y: '#founder-story', offsetY: 0 },
+                duration: 0.6,
+                ease: 'power3.inOut',
+              });
+            }
+          },
+        });
+      }
 
       if (list && itemsRef.current.length) {
         gsap.set(itemsRef.current, { x: 72, opacity: 0 });
@@ -121,7 +140,7 @@ export default function OutcomesSection() {
     }, sectionRef);
 
     const onResize = () => ScrollTrigger.refresh();
-    window.addEventListener('resize', onResize);
+    window.addEventListener('resize', onResize, { passive: true });
     return () => {
       window.removeEventListener('resize', onResize);
       ctx.revert();
@@ -135,7 +154,7 @@ export default function OutcomesSection() {
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 1, ease: EASE }}
+          transition={{ duration: 0.6, ease: EASE }}
           className="w-full overflow-hidden shadow-[0_20px_56px_rgba(0,0,0,0.07)]"
         >
           <div
@@ -147,7 +166,7 @@ export default function OutcomesSection() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.85, ease: EASE }}
+              transition={{ duration: 0.55, ease: EASE }}
               className="font-sans text-[clamp(1.25rem,2.5vw,2rem)] font-bold uppercase tracking-[0.16em] text-[#2B2B2B]"
             >
               Outcomes You{' '}

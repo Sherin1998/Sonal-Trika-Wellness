@@ -11,14 +11,23 @@ import VideoTestimonialModal from './VideoTestimonialModal';
 
 interface VideoTestimonialsGridProps {
   videos: VideoTestimonial[];
+  centered?: boolean;
 }
 
-export default function VideoTestimonialsGrid({ videos }: VideoTestimonialsGridProps) {
+export default function VideoTestimonialsGrid({ videos, centered = false }: VideoTestimonialsGridProps) {
   const [activeVideo, setActiveVideo] = useState<VideoTestimonial | null>(null);
+
+  const gridClass = centered
+    ? 'mx-auto flex flex-wrap justify-center gap-6 md:gap-8 max-w-5xl'
+    : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8';
+
+  const cardClass = centered
+    ? 'group text-left cursor-pointer border-0 p-0 bg-transparent w-full max-w-[280px] sm:max-w-[300px]'
+    : 'group text-left cursor-pointer border-0 p-0 bg-transparent w-full';
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+      <div className={gridClass}>
         {videos.map((video, i) => (
           <motion.button
             key={video.id}
@@ -33,7 +42,7 @@ export default function VideoTestimonialsGrid({ videos }: VideoTestimonialsGridP
             }}
             whileHover={{ y: -4 }}
             onClick={() => setActiveVideo(video)}
-            className="group text-left cursor-pointer border-0 p-0 bg-transparent w-full"
+            className={cardClass}
           >
             <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-[#1A1A1A] shadow-[0_8px_32px_rgba(0,0,0,0.08)]">
               <img

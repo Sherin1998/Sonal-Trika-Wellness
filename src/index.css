@@ -454,23 +454,42 @@ html, body {
   }
 }
 
-/* Nervous System section — page scroll snap on section entry only */
+/* Nervous System section — scroll snap disabled for smoother GSAP scroll performance */
 html {
-  scroll-snap-type: y proximity;
+  scroll-snap-type: none;
 }
 
 .snap-section-start {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  scroll-snap-align: none;
+  scroll-snap-stop: normal;
   scroll-margin-top: 0;
 }
 
+/* GPU-friendly compositing for scroll-driven layers */
+.gpu-layer {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
   html {
     scroll-snap-type: none;
   }
 
   .snap-section-start {
     scroll-snap-stop: normal;
+  }
+
+  .will-change-transform {
+    will-change: auto;
   }
 }

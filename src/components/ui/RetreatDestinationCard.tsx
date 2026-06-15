@@ -82,7 +82,7 @@ export default function RetreatDestinationCard({
         initial={{ opacity: 0, x: 48 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: '-40px' }}
-        transition={{ delay: index * 0.1, duration: 0.8, ease: EASE }}
+        transition={{ delay: index * 0.08, duration: 0.5, ease: EASE }}
       >
         <CardContent location={location} />
       </motion.div>

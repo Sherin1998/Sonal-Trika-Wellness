@@ -26,25 +26,24 @@ export default function TestimonialsSection() {
   const [mode, setMode] = useState<TestimonialMode>('written');
 
   return (
-    <section
-      id="testimonials"
-      className="overflow-hidden bg-[#F8F5F0] py-20 md:py-[120px]"
-    >
+    <section id="testimonials" className="overflow-hidden bg-white pt-16 pb-8 md:pt-20 md:pb-10">
       <Container>
-        <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-12">
-          <div className="lg:col-span-4 lg:sticky lg:top-28">
+        <div
+          className="overflow-hidden rounded-[28px] border border-[#e5e5e5]/70 bg-[#f6f1fe] px-6 py-8 shadow-[0_12px_48px_rgba(140,130,182,0.08)] md:rounded-[32px] md:px-10 md:py-10 lg:px-12 lg:py-12"
+        >
+          <div className="max-w-xl">
             <SectionLabel dotColor="#8C82B6">Testimonials</SectionLabel>
             <ServiceTypewriterHeadline
               text="Voices of restoration"
               accentWord="restoration"
               className="text-left"
             />
-            <p className="mt-5 max-w-md font-sans text-body-sm leading-relaxed text-[#888888]">
+            <p className="mt-5 font-sans text-body-sm leading-relaxed text-[#888888]">
               Real stories from clients, practitioners, and teams who found their way back to
               balance through Trika&apos;s sound wellness offerings.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            <div className="mt-6 flex flex-wrap items-center gap-3">
               <button
                 type="button"
                 onClick={() => setMode('written')}
@@ -64,27 +63,29 @@ export default function TestimonialsSection() {
             </div>
           </div>
 
-          <div className="min-w-0 lg:col-span-8 lg:flex lg:justify-start">
+          <div className="mt-8 md:mt-10 min-w-0">
             <AnimatePresence mode="wait">
               {mode === 'written' ? (
                 <motion.div
                   key="written"
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  className="-mx-2 md:mx-0"
                 >
                   <HorizontalTestimonialMarquee testimonials={TESTIMONIALS} />
                 </motion.div>
               ) : (
                 <motion.div
                   key="video"
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  className="flex justify-center"
                 >
-                  <VideoTestimonialsGrid videos={VIDEO_TESTIMONIALS} />
+                  <VideoTestimonialsGrid videos={VIDEO_TESTIMONIALS} centered />
                 </motion.div>
               )}
             </AnimatePresence>

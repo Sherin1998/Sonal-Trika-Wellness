@@ -3,12 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { motion } from 'motion/react';
+import { useEffect, useRef } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 
 import SeamlessVideo from '../ui/SeamlessVideo';
 import GradientButton from '../ui/GradientButton';
 import TextType from '../ui/TextType';
+import { onScrollRAF, shouldDisableHeavyMotion } from '../../utils/performance';
 
 const HERO_HEADLINE = 'True healing begins when the mind settles into sound';
 const HERO_SUBTEXT =
@@ -22,7 +24,6 @@ const heroTextStyle = {
 
 interface CinematicHeroProps {
   videoSrc: string;
-  scrollY: number;
   onPrimaryCtaClick?: () => void;
   onSecondaryCtaClick?: () => void;
 }
@@ -31,27 +32,50 @@ const ease = [0.25, 0.1, 0.25, 1] as const;
 
 export default function CinematicHero({
   videoSrc,
-  scrollY,
   onPrimaryCtaClick,
   onSecondaryCtaClick,
 }: CinematicHeroProps) {
-  const contentOpacity = Math.max(0, 1 - scrollY * 0.002);
-  const contentY = scrollY * 0.35;
+  const reducedMotion = useReducedMotion();
+  const contentRef = useRef<HTMLDivElement>(null);
+  const scrollHintRef = useRef<HTMLDivElement>(null);
+  const videoParallaxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (reducedMotion || shouldDisableHeavyMotion()) return;
+
+    const content = contentRef.current;
+    const hint = scrollHintRef.current;
+    const videoWrap = videoParallaxRef.current;
+
+    return onScrollRAF((scrollY) => {
+      if (content) {
+        const opacity = Math.max(0, 1 - scrollY * 0.002);
+        const y = scrollY * 0.35;
+        content.style.opacity = String(opacity);
+        content.style.transform = `translate3d(0, ${y}px, 0)`;
+      }
+      if (hint) {
+        hint.style.opacity = String(Math.max(0, 1 - scrollY * 0.005));
+      }
+      if (videoWrap) {
+        videoWrap.style.transform = `translate3d(0, ${scrollY * 0.15}px, 0)`;
+      }
+    });
+  }, [reducedMotion]);
 
   const containerVariants = {
     hidden: {},
     visible: {
-      transition: { staggerChildren: 0.2, delayChildren: 0.15 },
+      transition: { staggerChildren: 0.12, delayChildren: 0.1 },
     },
   };
 
-  const fadeUpBlur = {
-    hidden: { opacity: 0, y: 32, filter: 'blur(10px)' },
+  const fadeUp = {
+    hidden: { opacity: 0, y: 24 },
     visible: {
       opacity: 1,
       y: 0,
-      filter: 'blur(0px)',
-      transition: { duration: 1, ease },
+      transition: { duration: 0.5, ease },
     },
   };
 
@@ -60,30 +84,29 @@ export default function CinematicHero({
       id="hero-root-stage"
       className="relative w-full h-screen min-h-[600px] overflow-hidden"
     >
-      <SeamlessVideo src={videoSrc} parallaxY={scrollY * 0.15} />
+      <div ref={videoParallaxRef} className="absolute inset-0 will-change-transform">
+        <SeamlessVideo src={videoSrc} />
+      </div>
 
       <div className="absolute inset-0 z-[1] bg-black/35 pointer-events-none" aria-hidden />
 
       <motion.div
-        className="relative z-10 flex h-full items-end md:items-center px-6 md:px-12 xl:px-20 pt-24 pb-20 md:pb-16"
-        style={{
-          opacity: contentOpacity,
-          transform: `translate3d(0, ${contentY}px, 0)`,
-        }}
+        ref={contentRef}
+        className="relative z-10 flex h-full items-end md:items-center px-6 md:px-12 xl:px-20 pt-24 pb-20 md:pb-16 will-change-transform"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         <div className="max-w-4xl">
           <motion.p
-            variants={fadeUpBlur}
+            variants={fadeUp}
             className="font-sans text-xs md:text-sm uppercase tracking-[0.35em] mb-6 md:mb-8"
             style={heroTextStyle}
           >
             Trika Wellness
           </motion.p>
 
-          <motion.div variants={fadeUpBlur} className="mb-8 md:mb-10">
+          <motion.div variants={fadeUp} className="mb-8 md:mb-10">
             <TextType
               as="h1"
               text={[HERO_HEADLINE]}
@@ -100,17 +123,14 @@ export default function CinematicHero({
           </motion.div>
 
           <motion.p
-            variants={fadeUpBlur}
-            className="font-display text-base md:text-xl max-w-xl leading-relaxed mb-8 md:mb-10"
+            variants={fadeUp}
+            className="font-display text-base md:text-xl max-w-xl leading-relaxed mb-8 md:mb-10 break-words"
             style={heroTextStyle}
           >
             {HERO_SUBTEXT}
           </motion.p>
 
-          <motion.div
-            variants={fadeUpBlur}
-            className="flex flex-col sm:flex-row gap-4"
-          >
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4">
             <GradientButton
               variant="primary"
               onClick={onPrimaryCtaClick}
@@ -127,25 +147,27 @@ export default function CinematicHero({
         </div>
       </motion.div>
 
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 pointer-events-none"
-        style={{ opacity: Math.max(0, 1 - scrollY * 0.005) }}
-        animate={{ y: [0, 6, 0] }}
-        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <span
-          className="font-sans text-[10px] uppercase tracking-[0.3em]"
-          style={heroTextStyle}
+      {!reducedMotion && (
+        <motion.div
+          ref={scrollHintRef}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 pointer-events-none will-change-transform"
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2.5, repeat: Number.POSITIVE_INFINITY, ease: 'easeInOut' }}
         >
-          Scroll
-        </span>
-        <div
-          className="w-px h-8"
-          style={{
-            background: 'linear-gradient(to bottom, #FFFFFF, transparent)',
-          }}
-        />
-      </motion.div>
+          <span
+            className="font-sans text-[10px] uppercase tracking-[0.3em]"
+            style={heroTextStyle}
+          >
+            Scroll
+          </span>
+          <div
+            className="w-px h-8"
+            style={{
+              background: 'linear-gradient(to bottom, #FFFFFF, transparent)',
+            }}
+          />
+        </motion.div>
+      )}
     </section>
   );
 }

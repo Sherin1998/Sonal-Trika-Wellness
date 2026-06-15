@@ -8,6 +8,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { motion, useReducedMotion } from 'motion/react';
 import HeroBrandTypewriter from '../ui/HeroBrandTypewriter';
+import { shouldDisableHeavyMotion } from '../../utils/performance';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,7 +21,7 @@ export default function ServicesHero() {
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (reducedMotion || !sectionRef.current) return;
+    if (reducedMotion || !sectionRef.current || shouldDisableHeavyMotion()) return;
 
     const ctx = gsap.context(() => {
       if (bgRef.current) {

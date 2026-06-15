@@ -57,9 +57,9 @@ export default function ContactSection({ onSubmit }: ContactSectionProps) {
   };
 
   return (
-    <section id="contact" className="py-20 md:py-[120px] bg-white">
+    <section id="contact" className="pt-8 pb-20 md:pt-12 md:pb-[120px] bg-white">
       <Container>
-        <div className="mb-12 md:mb-16 text-center max-w-2xl mx-auto">
+        <div className="mb-10 md:mb-12 text-center max-w-2xl mx-auto">
           <SectionLabel dotColor="#A55A42">Contact</SectionLabel>
           <ServiceTypewriterHeadline
             text="Visit Trika Wellness"

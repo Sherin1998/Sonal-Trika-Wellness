@@ -7,6 +7,7 @@ import { useLayoutEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { shouldDisableHeavyMotion } from '../../utils/performance';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -43,6 +44,22 @@ export default function ScrollRevealSection() {
     const accentGlow = finalLayout.querySelector('.accent-glow');
     const cta = finalLayout.querySelector('.reveal-cta');
 
+    if (shouldDisableHeavyMotion()) {
+      gsap.set(morph, { opacity: 0, scale: 0.38, visibility: 'hidden' });
+      gsap.set(image, { scale: 1 });
+      gsap.set(fullscreen, { opacity: 0 });
+      gsap.set(grid, { opacity: 1 });
+      gsap.set(finalLayout, { opacity: 1, pointerEvents: 'auto' });
+      gsap.set([textLines, pills, label, accentWords, accentGlow, cta], {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        scaleX: 1,
+        clearProps: 'filter',
+      });
+      return;
+    }
+
     const ctx = gsap.context(() => {
       gsap.set(morph, {
         scale: 0.52,
@@ -53,10 +70,10 @@ export default function ScrollRevealSection() {
       gsap.set(fullscreen, { opacity: 1 });
       gsap.set(finalLayout, { opacity: 0 });
       gsap.set(grid, { opacity: 0 });
-      gsap.set(textLines, { y: 56, opacity: 0, filter: 'blur(8px)' });
-      gsap.set(pills, { scale: 0.9, opacity: 0, filter: 'blur(4px)' });
-      gsap.set(label, { y: 24, opacity: 0 });
-      gsap.set(accentWords, { y: 40, opacity: 0, filter: 'blur(12px)', scale: 0.92 });
+      gsap.set(textLines, { y: 40, opacity: 0 });
+      gsap.set(pills, { scale: 0.94, opacity: 0 });
+      gsap.set(label, { y: 20, opacity: 0 });
+      gsap.set(accentWords, { y: 32, opacity: 0, scale: 0.96 });
       gsap.set(accentGlow, { opacity: 0, scaleX: 0 });
       gsap.set(cta, { y: 28, opacity: 0 });
 
@@ -76,10 +93,9 @@ export default function ScrollRevealSection() {
           {
             y: 0,
             opacity: 1,
-            filter: 'blur(0px)',
-            stagger: 0.12,
-            duration: 0.7,
-            ease: 'power1.out',
+            stagger: 0.1,
+            duration: 0.55,
+            ease: 'power2.out',
           },
           '<0.1'
         )
@@ -88,12 +104,11 @@ export default function ScrollRevealSection() {
           {
             scale: 1,
             opacity: 1,
-            filter: 'blur(0px)',
-            stagger: 0.15,
-            duration: 0.7,
-            ease: 'power1.out',
+            stagger: 0.12,
+            duration: 0.55,
+            ease: 'power2.out',
           },
-          '<0.2'
+          '<0.15'
         )
 
         // Accent line — word-by-word cinematic reveal
@@ -129,7 +144,7 @@ export default function ScrollRevealSection() {
           trigger: section,
           start: 'top top',
           end: '+=260%',
-          scrub: 2,
+          scrub: 1,
           pin: pin,
           anticipatePin: 1,
           invalidateOnRefresh: true,

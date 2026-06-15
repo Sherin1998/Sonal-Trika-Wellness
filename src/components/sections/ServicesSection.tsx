@@ -17,6 +17,7 @@ import {
   handleServiceSecondaryCta,
   openConnectPanel,
 } from '../../utils/serviceCta';
+import { shouldDisableHeavyMotion } from '../../utils/performance';
 
 const LEARN_MORE_CTAS = ['Learn More', 'View Curriculum', 'Module Details', 'View Calendar'];
 
@@ -45,9 +46,7 @@ export default function ServicesSection({
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (reducedMotion || !sectionRef.current) return;
-    const isMobile = window.matchMedia('(max-width: 767px)').matches;
-    if (isMobile) return;
+    if (reducedMotion || !sectionRef.current || shouldDisableHeavyMotion()) return;
 
     const ctx = gsap.context(() => {
       if (parallaxBgRef.current) {
