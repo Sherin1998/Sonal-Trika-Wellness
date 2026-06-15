@@ -134,12 +134,12 @@ export default function AboutTrikaWellnessSection() {
   return (
     <section
       id="about-trika"
-      className="relative w-full overflow-x-hidden border-t border-[#e5e5e5]/80"
+      className="relative w-full overflow-x-hidden border-t border-[#e5e5e5]/40"
       style={{ backgroundColor: BRIGHT_BG, color: TEXT }}
     >
       <FlowArt aria-label="About Trika Wellness story">
         <FlowSection aria-label="Trika Wellness introduction" style={{ backgroundColor: BRIGHT_BG, color: TEXT }}>
-          <div className="flex flex-1 flex-col justify-between gap-10 pt-12 md:pt-16">
+          <div className="flex flex-1 flex-col justify-between gap-10 pt-6 md:pt-10">
             <div className="space-y-6 text-center">
               <h2 className="font-display text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.1] tracking-tight">
                 Designed for modern

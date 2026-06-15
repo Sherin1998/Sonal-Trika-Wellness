@@ -15,7 +15,7 @@ export default function FounderEditorialSection() {
       className="relative w-full overflow-hidden pt-16 md:pt-24 lg:pt-28"
       style={{ backgroundColor: BRIGHT_BG, color: TEXT }}
     >
-      <div className="px-6 md:px-12 pb-10 md:pb-14">
+      <div className="px-6 md:px-12 pb-4 md:pb-6">
         <FounderEditorialContent />
       </div>
     </section>

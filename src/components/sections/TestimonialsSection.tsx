@@ -26,7 +26,7 @@ export default function TestimonialsSection() {
   const [mode, setMode] = useState<TestimonialMode>('written');
 
   return (
-    <section id="testimonials" className="overflow-hidden bg-white pt-16 pb-8 md:pt-20 md:pb-10">
+    <section id="testimonials" className="overflow-hidden bg-white py-16 md:py-20">
       <Container>
         <div
           className="overflow-hidden rounded-[28px] border border-[#e5e5e5]/70 bg-[#f6f1fe] px-6 py-8 shadow-[0_12px_48px_rgba(140,130,182,0.08)] md:rounded-[32px] md:px-10 md:py-10 lg:px-12 lg:py-12"

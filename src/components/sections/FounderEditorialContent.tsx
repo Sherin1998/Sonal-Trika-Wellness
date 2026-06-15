@@ -224,7 +224,7 @@ export default function FounderEditorialContent() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <PillLink href="/#contact">
+            <PillLink href="/contact">
               Get In Touch
               <ArrowUpRight className="h-4 w-4" />
             </PillLink>

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { motion } from 'motion/react';
 import {
   MapPin,
@@ -16,6 +16,8 @@ import {
 import Container from '../ui/Container';
 import SectionLabel from '../ui/SectionLabel';
 import ServiceTypewriterHeadline from '../ui/ServiceTypewriterHeadline';
+import { GradientDots } from '../ui/gradient-dots';
+import StardustBackground from '../ui/StardustBackground';
 import { TRIKA_CONTACT } from '../../data/companyContact';
 
 function FacebookIcon({ className }: { className?: string }) {
@@ -45,6 +47,15 @@ export default function ContactSection({ onSubmit }: ContactSectionProps) {
     message: '',
   });
   const [submitted, setSubmitted] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -57,14 +68,31 @@ export default function ContactSection({ onSubmit }: ContactSectionProps) {
   };
 
   return (
-    <section id="contact" className="pt-8 pb-20 md:pt-12 md:pb-[120px] bg-white">
-      <Container>
-        <div className="mb-10 md:mb-12 text-center max-w-2xl mx-auto">
+    <section id="contact" className="relative overflow-hidden py-16 md:py-20">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
+        {!reducedMotion ? (
+          <>
+            <GradientDots
+              backgroundColor="#FFFFFF"
+              dotColor="#CBBD93"
+              opacity={0.22}
+              duration={48}
+            />
+            <StardustBackground count={32} opacity={0.16} />
+            <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-[#F8F5F0]/50" />
+          </>
+        ) : (
+          <div className="absolute inset-0 bg-white" />
+        )}
+      </div>
+
+      <Container className="relative z-10">
+        <div className="mb-10 md:mb-12 max-w-2xl">
           <SectionLabel dotColor="#A55A42">Contact</SectionLabel>
           <ServiceTypewriterHeadline
             text="Visit Trika Wellness"
             accentWord="Wellness"
-            className="justify-center text-center"
+            className="text-left"
           />
           <p className="mt-5 font-sans text-body-sm text-[#888888] leading-relaxed">
             Book a session, enquire about corporate programmes, or visit our Mumbai studio.

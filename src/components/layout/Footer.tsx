@@ -28,7 +28,7 @@ const PAGE_LINKS = [
   { label: 'Experiences', href: '/#experiences' },
   { label: 'Corporate', href: '/services#group' },
   { label: 'Retreats', href: '/#retreats' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 const EXPERIENCE_LINKS = [
@@ -167,8 +167,8 @@ export default function Footer() {
 
         <Container className="py-14 md:py-16">
           <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
-            <a
-              href="/#contact"
+            <Link
+              to="/contact"
               className="group inline-flex items-center gap-3 font-display text-[clamp(2rem,5vw,3.5rem)] leading-none tracking-tight text-transparent"
               style={{ WebkitTextStroke: '1px rgba(216, 197, 164, 0.55)' }}
             >
@@ -176,17 +176,17 @@ export default function Footer() {
                 Let&apos;s Begin Your Journey
               </span>
               <ArrowUpRight className="h-8 w-8 text-[#D8C5A4] transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1 md:h-10 md:w-10" />
-            </a>
+            </Link>
             <div className="flex shrink-0 flex-col items-stretch gap-3 sm:flex-row sm:items-center">
               <WatchExperienceButton variant="footer" />
-              <motion.a
-                href="/#contact"
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center justify-center rounded-full bg-[#D8C5A4] px-8 py-3.5 font-sans text-caption font-semibold uppercase tracking-[0.18em] text-[#2B2B2B] transition-colors duration-500 hover:bg-[#F2B5A0]"
-              >
-                Get In Touch
-              </motion.a>
+              <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center justify-center rounded-full bg-[#D8C5A4] px-8 py-3.5 font-sans text-caption font-semibold uppercase tracking-[0.18em] text-[#2B2B2B] transition-colors duration-500 hover:bg-[#F2B5A0]"
+                >
+                  Get In Touch
+                </Link>
+              </motion.div>
             </div>
           </div>
         </Container>

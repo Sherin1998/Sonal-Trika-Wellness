@@ -21,5 +21,5 @@ export const NAV_LINKS: MenuLink[] = [
   { label: 'About', url: '/about' },
   { label: 'Services', url: '/services', children: SERVICE_CHILDREN },
   { label: 'Testimonials', url: '/#testimonials' },
-  { label: 'Contact', url: '/#contact' },
+  { label: 'Contact', url: '/contact' },
 ];

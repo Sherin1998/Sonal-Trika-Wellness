@@ -200,6 +200,7 @@ export default function NavigationBar({
         {onLogoClick ? (
           <button
             id="nav-logo"
+            type="button"
             onClick={onLogoClick}
             className="cursor-pointer focus:outline-none"
           >

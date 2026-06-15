@@ -19,7 +19,7 @@ import {
 } from '../../utils/serviceCta';
 import { shouldDisableHeavyMotion } from '../../utils/performance';
 
-const LEARN_MORE_CTAS = ['Learn More', 'View Curriculum', 'Module Details', 'View Calendar'];
+const LEARN_MORE_CTAS = ['Learn More', 'View Curriculum', 'Module Details'];
 
 gsap.registerPlugin(ScrollTrigger);
 

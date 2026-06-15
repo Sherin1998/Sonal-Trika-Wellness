@@ -4,6 +4,7 @@
  */
 
 import { useLayoutEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -306,13 +307,13 @@ export default function ScrollRevealSection() {
             </div>
 
             {/* CTA below headline */}
-            <a
-              href="#contact"
+            <Link
+              to="/contact"
               className="reveal-cta inline-flex items-center gap-2 mt-10 md:mt-14 font-sans text-body-sm md:text-subheading font-medium tracking-tight text-[#2B2B2B] border-b border-[#A55A42]/40 pb-1 hover:text-[#A55A42] hover:border-[#A55A42] transition-colors duration-500 pointer-events-auto"
             >
               Join for the mental Wellness Journey
               <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

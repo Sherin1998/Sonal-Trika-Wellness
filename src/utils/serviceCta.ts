@@ -41,7 +41,7 @@ export function handleServiceSecondaryCta(
     window.location.href = item.secondaryHref;
     return;
   }
-  const learnMoreCtas = ['Learn More', 'View Curriculum', 'Module Details', 'View Calendar'];
+  const learnMoreCtas = ['Learn More', 'View Curriculum', 'Module Details'];
   if (
     item.learnMore &&
     item.secondaryCta &&

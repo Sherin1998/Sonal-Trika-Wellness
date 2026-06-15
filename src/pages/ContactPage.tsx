@@ -3,22 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import NavigationBar from '../components/NavigationBar';
-import CinematicHero from '../components/sections/CinematicHero';
-import ScrollRevealSection from '../components/sections/ScrollRevealSection';
-import NervousSystemJourney from '../components/sections/NervousSystemJourney';
-import ExperiencesSection from '../components/sections/ExperiencesSection';
-import RetreatsSection from '../components/sections/RetreatsSection';
-import TestimonialsSection from '../components/sections/TestimonialsSection';
 import Footer from '../components/layout/Footer';
 import ConnectPanel from '../components/ConnectPanel';
+import ContactSection from '../components/sections/ContactSection';
 import { NAV_LINKS } from '../data/navigation';
 import { openConnectPanel } from '../utils/serviceCta';
-
-const HERO_VIDEO = '/videos/hero.mp4';
 
 interface ToastNotification {
   id: string;
@@ -26,9 +18,12 @@ interface ToastNotification {
   message: string;
 }
 
-export default function HomePage() {
-  const navigate = useNavigate();
+export default function ContactPage() {
   const [toasts, setToasts] = useState<ToastNotification[]>([]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const triggerToast = (title: string, message: string) => {
     const id = Math.random().toString(36).substring(2, 9);
@@ -39,40 +34,36 @@ export default function HomePage() {
   };
 
   return (
-    <div className="relative bg-[#F8F5F0] min-h-screen w-full text-[#2B2B2B]">
+    <div className="relative min-h-screen w-full bg-white text-[#2B2B2B]">
       <NavigationBar
         links={NAV_LINKS}
         ctaText="Book a Session"
-        variant="overlay"
+        variant="solid"
+        floating
         homeUrl="/"
         onCtaClick={() =>
           openConnectPanel({ service: 'General Inquiry', action: 'Book a Session' })
         }
       />
 
-      <CinematicHero
-        videoSrc={HERO_VIDEO}
-        onPrimaryCtaClick={() =>
-          openConnectPanel({ service: 'General Inquiry', action: 'Begin Your Healing Journey' })
-        }
-        onSecondaryCtaClick={() => navigate('/services')}
-      />
-
-      <ScrollRevealSection />
-
-      <div className="relative rounded-t-[32px] bg-white z-20 overflow-hidden shadow-[0_-8px_40px_rgba(0,0,0,0.06)]">
-        <NervousSystemJourney />
-        <ExperiencesSection />
-        <RetreatsSection />
-        <TestimonialsSection />
-        <Footer />
+      <div className="pt-28 md:pt-32">
+        <ContactSection
+          onSubmit={(data) =>
+            triggerToast(
+              'Message Received',
+              `Thank you ${data.name.split(' ')[0]} — we'll reach out to ${data.email} soon.`,
+            )
+          }
+        />
       </div>
+
+      <Footer />
 
       <ConnectPanel
         onSubmit={(data) =>
           triggerToast(
             'Message Received',
-            `Thank you ${data.name.split(' ')[0]} — we'll reach out to ${data.email} soon.`
+            `Thank you ${data.name.split(' ')[0]} — we'll reach out to ${data.email} soon.`,
           )
         }
       />

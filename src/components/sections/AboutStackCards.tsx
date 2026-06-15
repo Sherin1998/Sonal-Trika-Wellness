@@ -8,13 +8,15 @@ import gsap from 'gsap';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { openConnectPanel, type ConnectPanelDetail } from '../../utils/serviceCta';
 
 export interface AboutStackCardData {
   id: string;
   label: string;
   body: string;
   cta: string;
-  ctaHref: string;
+  ctaHref?: string;
+  connectPanel?: ConnectPanelDetail;
   imageSrc: string;
   imageAlt: string;
   animateBody?: boolean;
@@ -46,11 +48,13 @@ function CardCta({
   label,
   color,
   hoverColor,
+  connectPanel,
 }: {
-  href: string;
+  href?: string;
   label: string;
   color: string;
   hoverColor: string;
+  connectPanel?: ConnectPanelDetail;
 }) {
   const inner = (
     <motion.span
@@ -71,12 +75,26 @@ function CardCta({
     </motion.span>
   );
 
+  if (connectPanel) {
+    return (
+      <button
+        type="button"
+        onClick={() => openConnectPanel(connectPanel)}
+        className="inline-flex justify-center shrink-0 relative z-20"
+      >
+        {inner}
+      </button>
+    );
+  }
+
+  if (!href) return null;
+
   return href.startsWith('/') ? (
-    <Link to={href} className="inline-flex justify-center shrink-0">
+    <Link to={href} className="inline-flex justify-center shrink-0 relative z-20">
       {inner}
     </Link>
   ) : (
-    <a href={href} className="inline-flex justify-center shrink-0">
+    <a href={href} className="inline-flex justify-center shrink-0 relative z-20">
       {inner}
     </a>
   );
@@ -137,9 +155,10 @@ function CardPanel({
             {card.body}
           </p>
         </div>
-        <div className="shrink-0 pt-4 flex justify-center">
+        <div className="shrink-0 pt-4 flex justify-center relative z-20">
           <CardCta
             href={card.ctaHref}
+            connectPanel={card.connectPanel}
             label={card.cta}
             color={bright ? PANEL_BRIGHT : (card.ctaColor ?? '#E8DFCF')}
             hoverColor={card.ctaHoverColor ?? accentColor}

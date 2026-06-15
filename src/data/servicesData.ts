@@ -165,7 +165,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
         imageSrc: '/images/services/retreats-festivals.png',
         imageAlt: 'Retreat sound bath with candles and singing bowls',
         primaryCta: 'View Retreats',
-        secondaryCta: 'Book Experience',
+        secondaryCta: 'Learn More',
         primaryHref: '/#retreats',
       },
       {
@@ -189,7 +189,7 @@ export const SERVICE_GROUPS: ServiceGroup[] = [
         imageSrc: '/images/services/moon-sound-baths.png',
         imageAlt: 'Outdoor new moon full moon sound bath with singing bowls',
         primaryCta: 'Reserve Spot',
-        secondaryCta: 'View Calendar',
+        secondaryCta: 'Learn More',
       },
     ],
     compact: true,
