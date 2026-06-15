@@ -1,7 +1,7 @@
 # =============================================================================
 # Vercel deployment — commit only:
 #   package.json, package-lock.json, index.html, vite.config.ts, tsconfig.json
-#   src/, public/, .env.example
+#   src/, public/ (including public/videos/**/*.mp4)
 # =============================================================================
 
 # Dependencies — omit the ENTIRE node_modules/ folder (never cherry-pick packages).
@@ -35,8 +35,11 @@ coverage/
 # Vite dev cache
 .vite/
 
-# Large source uploads outside public/ (committed site videos live in public/videos/)
-# *.mp4
+# Video assets — self-hosted in public/videos/ (must be committed for GitHub + Vercel)
+# Ignore stray MP4s elsewhere; always track site videos under public/videos/
+*.mp4
+!public/videos/
+!public/videos/**
 
 # OS files
 .DS_Store
